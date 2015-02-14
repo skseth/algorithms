@@ -64,6 +64,26 @@ For process j, define Xj = 1 if j assigned, 0 if not to first server.
 E(Y)    = Sum_j X(j) 
         = Sum_j 1/n = 1
 
+#Conditional Probability
+Pr[X|Y] = Pr[X n Y] / Pr[Y]
+
+#Independence
+
+X and Y are independent iff :
+Pr{X n Y} = Pr{X}.Pr{Y}
+=> Pr(X | Y) = Pr(X), and vice versa
+
+#Reandom Variables being independent => Probability events are indepencent
+
+If A,B are independent, then E[A.B] = E[A].E[B]
+
+E(A.B) = Sum_a.b Pr[A = a]* Pr[B = b]
+
+
+
+
+
+
 
 
 

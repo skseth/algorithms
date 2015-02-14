@@ -1,8 +1,7 @@
+package sorting
 object mergesort {
 
-
-
-  def mergeSort(xs: List[Int]): List[Int] = {
+  def mergesort(xs: List[Int]): List[Int] = {
     def sort(xs: List[Int]) : List[Int] = {
       if (xs.length < 2) 
         return xs
@@ -20,12 +19,6 @@ object mergesort {
     }
 
     sort(xs)
-
   }
-
-  def main(args:Array[String]) {
-    println(mergeSort(List(34,56,7,90,7,30)))
-  }
-
 }
 
