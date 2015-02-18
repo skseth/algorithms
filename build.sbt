@@ -19,4 +19,4 @@ lazy val graphs = project.in(file("graphs")).
 						settings(commonSettings: _*)
 
 lazy val root = (project in file(".")).
-  					aggregate(structs,sorting)
+  					aggregate(structs,sorting, graphs)

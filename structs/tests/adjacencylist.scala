@@ -21,6 +21,19 @@ class AdjacencyListSpec extends FeatureSpec with GivenWhenThen {
         assert(h.length == 200)
         h.print()
     }
+
+    scenario("read adjacency list from edge file") {
+
+        given("a file with graphical input")
+        val datafile = "data/graphEdgesForSCC1.txt"
+
+        when("file is read")
+        val g = Graph.fromEdgeFile(datafile)
+   
+        then("9 nodes are read")
+        assert(g.length == 9)
+        g.print()
+    }
   }
 
   feature("Combine Nodes in a Graph") {
