@@ -65,7 +65,10 @@ class KosarajuSpec extends FeatureSpec with GivenWhenThen {
     val g = Graph.fromEdgeFile(filename)
 
     when("when we apply Kosaraju Algorithm")
+    val t0 = System.nanoTime()
     val sccs = dfs.kosaraju[Int](g)
+    val t1 = System.nanoTime()
+    println("Elapsed time: " + ((t1 - t0)/1000000) + "ms")
 
     then("we get sccs")
     println(reportsccs(sccs))

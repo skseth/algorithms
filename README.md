@@ -1,3 +1,54 @@
+#Review List
+
+* Divide and Conquer
+  - Merge Sort & Inversions
+  - Complexity Notation - O, omega, theta and small-o
+  - Strassens Matrix Multiplication Algorithm
+  - Closest-Pair (optional)
+  - Master Method
+
+* Quicksort
+  - Probability Review - Sample Spaces, Events, Random Variables, Expected Value, Linearity of Expectations
+  - Partition Algorithm - invariant, correctness, running time
+  - Choosing a good pivot
+  - Quicksort with Randomized Pivot
+  - Proof of Quicksort average running time
+* Selection
+  - Randomized Selection avg O(n)
+  - Deterministic Selection
+* Graphs
+  - Graphs - Basic definitions
+  - Graphs - Karger's Minimum Cut Algorithm
+  - Probability Review   - Conditional Probability
+  - MinCut optimizations for randomized algorithms
+  - Shortest Path
+  - Topological Sort
+  - SCC - Kosaraju's algorithm
+  - Djikstra's Algorithm
+
+#TODO
+Convert to rst - maths equations cleanup
+Theory Problems summary
+Review Problem Sets
+Clean up Code
+
+Inversions - try common approach
+Strassens Algo - write code
+Closest-Pair
+Quicksort Pivot Partition proof by induction
+Quicksort - prove that 25-75 split will result in O(n log n performance)
+Quicksort - read formal proof
+Quicksort with repeated elements
+Quicksort randomized
+Leighman-Leighton notes on maths for compscience
+Graph Algorithms - adapt for disconnected graphs
+Proof of BFS being shortest distance
+Proof that SCCs form a DAG
+Family Tree Visualization - http://vis.berkeley.edu/courses/cs294-10-sp10/wiki/images/f/f2/Family_Tree_Visualization_-_Final_Paper.pdf
+[Structure of the Web](http://www.cis.upenn.edu/~mkearns/teaching/NetworkedLife/broder.pdf)
+Small World Property - Core exhibits this. Six degrees of separation. http://en.wikipedia.org/wiki/Small-world_experiment - Milgram's experiments
+Networks, Crowds and Markets - Easley & Kreinberg
+
 # algorithms
 
 Based mostly on the excellent lectures on [Algorithms: Design and Analysis, Part 1](https://class.coursera.org/algo-007/) from Coursera.
@@ -23,6 +74,23 @@ Theory Problems :
 
 
 #7. [Posted January 31st] Suppose we modify the deterministic linear-time selection algorithm by grouping the elements into groups of 7, rather than groups of 5. (Use the "median-of-medians" as the pivot, as before.) Does the algorithm still run in O(n) time? What if we use groups of 3?
+
+Case 1: Groups of 7
+
+Median of medians will be larger than 2/7 of n elements, and smaller than same.
+Next recursive call is on no more than 5/7 elements.
+
+Hence, 
+
+T(n)≤ cn+T(n/7)+T(5n/7)
+
+Choosing a = 7c, we get :
+
+T(n) <= c.n + 7.cn/7 + 5.7c.n/7
+      = c.n + cn + 5cn
+      = 7.c.n
+QED
+
 
 For the case of 3 i have the following line of argument :
 

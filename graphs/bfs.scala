@@ -2,6 +2,7 @@ package graphs
 
 import structs._
 import scala.collection.mutable._
+import scala.annotation._
 
 object bfs {
 
@@ -78,31 +79,30 @@ object dfs {
 				finalorder = node.id::finalorder
 			}
 
-			// a reimplementation of dfsone without recursion
-			def dfsonestack(node:structs.Node[T]):Unit = {
-				val stack = Stack[List[T]]()
-				stack.push(List(node.id))
-
-				while (!stack.isEmpty) {
-					val ns = stack.head
-					ns match {
-						case Nil => stack.pop()
-						case (head::tail) if explored.contains(head) => {
+			// a reimplementation of dfsone with tail recursion
+			@tailrec
+			def dfsonestack(stack:Stack[List[T]]):Unit = stack.headOption match {
+				case Some(Nil) => {
+						stack.pop()
+					}
+				case Some(head::tail) if explored.contains(head) => {
 							finalorder = head::finalorder
 							stack.pop()
-							stack.push(tail.filter(e => !explored.contains(e)).toList)
+							dfsonestack(stack.push(tail.filter(e => !explored.contains(e)).toList))
 						}
-						case (head::tail) => {
+				case Some(head::tail) => {
 							explored += head
-							stack.push(graph.getNode(head).allRevEdges.filter(e => !explored.contains(e)).toList)
+							val children = graph.getNode(head).allRevEdges.filter(e => !explored.contains(e)).toList
+							dfsonestack(stack.push(children))
 						}
-					}
-				}
+				case None => ()
 			}
 
 			graph.allNodes.values.foreach(n => {
 				if (!explored.contains(n.id)) {
-					dfsonestack(n)					
+					val stack = Stack[List[T]]()
+					stack.push(List(n.id))
+					dfsonestack(stack)					
 				}
 			})
 		}

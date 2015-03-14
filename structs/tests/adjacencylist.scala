@@ -19,7 +19,6 @@ class AdjacencyListSpec extends FeatureSpec with GivenWhenThen {
    
         then("200 nodes are read")
         assert(h.length == 200)
-        h.print()
     }
 
     scenario("read adjacency list from edge file") {
@@ -32,7 +31,23 @@ class AdjacencyListSpec extends FeatureSpec with GivenWhenThen {
    
         then("9 nodes are read")
         assert(g.length == 9)
-        g.print()
+    }
+
+    scenario("read adjacency list from node file with edge length") {
+
+        given("a file with graphical input")
+        val datafile = "data/graphSmallWithLength.txt"
+
+        when("file is read")
+        val g = Graph.fromFile(datafile)
+   
+        then("5 nodes are read")
+        assert(g.length == 5)
+        val node = g.getNode(2)
+
+        for (n <- g.allNodes().values; (enodeid, enodelength) <- n.edgeIterator) {
+            println(enodeid, enodelength)
+        }
     }
   }
 

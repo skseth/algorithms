@@ -1,0 +1,59 @@
+// List
+
+/*
+
+first    - O(1)
+prepend
+
+append   - O(n)
+concat
+insert
+last
+nth
+
+*/
+
+// Type A is covariant
+sealed trait MyList[+A] {
+
+	// B being a subclass of A
+	// the second :: is actually the constructor for cons below
+	def ::[B >: A](b:B) : MyList[B] = new Cons(b, this)
+}
+
+case class ::[+A](head:A, tail:MyList[A]) extends MyList[A]
+case object MyNil extends MyList[Nothing]
+
+
+/*
+
+Bankers Queue - Lazy
+
+last
+append
+prepend
+
+concat
+insert
+last
+nth
+
+
+
+class BankersQueue[+A](front:Stream[A], fsize:Int, rear:Stream[A], rsize:Int) {
+	def enqueue[B >: A](item:A) = 
+		queue(front, fsize, item #:: rear, rsize + 1)
+
+	def dequeue[B >: A]() = front match {
+		case head #:: tail => (hd, queue(tail, fsize-1, rear, rsize)
+		case _			   => throw new NoSuchElementException
+	}
+}
+
+object BankersQueue {
+	def queue[+A](front:Stream[A], fsize:Int, rear:Stream[A], rsize:Int) = {
+		if (q.rsize <= q.fsize) new BankersQueue(front, fsize, rear rsize)
+		else new BankersQueue(q.front ++ q.rear.reverse, q.fsize + q.rsize, 0, Stream())
+	}
+}
+*/

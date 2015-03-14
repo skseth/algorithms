@@ -6,10 +6,12 @@ import scala.util.Random
 
 case class Node[T](id:T) {
 	val edges = ArrayBuffer[T]()
+	val edgelength = ArrayBuffer[Int]()
 	val revedges = ArrayBuffer[T]()
 
-	def addEdge(e:T) = {
+	def addEdge(e:T, l:Int = 1) = {
 		edges += e
+		edgelength += l
 	}
 
 	def addReverseEdge(e:T) = {
@@ -37,6 +39,8 @@ case class Node[T](id:T) {
 	def allEdges = this.edges
 	def allRevEdges = this.revedges
 
+	def edgeIterator = for (i <- 0 to edges.length-1) yield (edges(i), edgelength(i))
+
 	def randomEdge() = {
 		val random_index = Random.nextInt(edges.size);
 		(id, edges(random_index))
@@ -49,25 +53,33 @@ case class Node[T](id:T) {
 	}
 
 	def print() {
-		println("Node ", id, edges.toList, revedges.toList)
+		println("Node ", id, edges.toList, edgelength.toList, revedges.toList)
 	}
 }
 
-class Graph[T:Ordering]() {
+class Graph[T:Ordering] (val isUndirected:Boolean=false) {
 	val nodes = new HashMap[T, Node[T]]()
 	val nodekeys = new ArrayBuffer[T]()
 
-	def addEdge(from:T, to:T) = {
-		if (!nodes.isDefinedAt(from)) addNode(Node(from))
-		if (!nodes.isDefinedAt(to)) addNode(Node(to))
+	def addEdge(from:T, to:T, l:Int = 1) = {
+		if (!nodes.isDefinedAt(from)) addNode(from)
+		if (!nodes.isDefinedAt(to)) addNode(to)
 
-		nodes(from).addEdge(to)
-		nodes(to).addReverseEdge(from)
+		nodes(from).addEdge(to, l)
+
+		if (isUndirected) {
+			nodes(to).addEdge(from, l)
+		}
+		else {
+			nodes(to).addReverseEdge(from)			
+		}
 	}
 
-	def addNode(n:Node[T]) = {
-		nodes(n.id) = n
-		nodekeys += n.id
+	def addNode(nodeid:T) = {
+		if (!nodes.isDefinedAt(nodeid)) {
+			nodes(nodeid) = new Node[T](nodeid)
+			nodekeys += nodeid
+		}
 	}
 
 	def removeNode(del_n:T):Unit = {
@@ -95,8 +107,11 @@ class Graph[T:Ordering]() {
 	}
 
 	override def clone() = {
-		val g = new Graph[T]()
-		nodes.values.map(n => g.addNode(n.clone()))
+		val g = new Graph[T](isUndirected)
+		nodes.values.foreach(n => {
+			g.addNode(n.id)
+			for (e <- n.edgeIterator) g.addEdge(n.id, e._1, e._2)
+		})
 		g
 	}
 
@@ -122,15 +137,28 @@ object Graph {
 		graph
 	}
 
-	def fromFile(filename:String) = {
-		var graph = new Graph[Int]()
+	def parseAndAddEdge(graph:Graph[Int], srcnodeid:Int, edgestr:String) = {
+		val a = edgestr.split(",")
+		val edgenode = a(0).toInt
+		val edgelength = if (a.length > 1) a(1).toInt else 1
+		(edgenode, edgelength)
+		graph.addEdge(srcnodeid, edgenode, edgelength)
+	}
+
+	def parseAndAddNode(graph:Graph[Int], line:String) = {
+	    val a = line.split("\\s+")
+	    val nodeid = a(0).toInt
+	    graph.addNode(nodeid)
+	    var s = a.view.slice(1, a.length).map(y => {
+	    	parseAndAddEdge(graph, nodeid, y)
+	    }).force
+	}
+
+	def fromFile(filename:String, isUndirected:Boolean = false) = {
+		var graph = new Graph[Int](isUndirected)
 
 		scala.io.Source.fromFile(filename).getLines().foreach{
-		    x => 
-			    val a = x.split("\\s+")
-			    val node = Node[Int](a(0).toInt)
-			    var s = a.view.slice(1, a.length).map(y => node.addEdge(y.toInt)).force
-			    graph.addNode(node)
+		    x => parseAndAddNode(graph, x)
 		}
 		graph
 	}

@@ -55,7 +55,6 @@ trait SortBehaviors { this: FeatureSpec with GivenWhenThen =>
 
   }
 }
-
  
 class QuicksortSpec extends FeatureSpec with GivenWhenThen with SortBehaviors {
 
