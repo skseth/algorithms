@@ -189,7 +189,7 @@ By pigeonhole principle, 2^k >= n!
                         k   >= log (n/2)^(n/2) 
                             = n/2 log (n/2) 
                             = n/2 log n - n/2 
-                        k   = omega(n log n) .. bounded below by
+                        k   = omega(n log n) .. bounded below by n log n.
 
 
 

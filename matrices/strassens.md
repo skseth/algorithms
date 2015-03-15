@@ -36,3 +36,4 @@ a > b^d
 
 T(n) = O(n^log_b a) = O(n^log 7) = O(n^2.807)
 
+

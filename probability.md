@@ -150,6 +150,7 @@ X1X3 and X2 are not independent
     E(X1.X3) = 1/4
     E(X2) = 1/2
     E(X1.X3).E(X2) = 1/8
+    
 
 
 
