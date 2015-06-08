@@ -84,7 +84,9 @@ object dfs {
 			def dfsonestack(stack:Stack[List[T]]):Unit = stack.headOption match {
 				case Some(Nil) => {
 						stack.pop()
+						dfsonestack(stack)
 					}
+
 				case Some(head::tail) if explored.contains(head) => {
 							finalorder = head::finalorder
 							stack.pop()

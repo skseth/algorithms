@@ -126,6 +126,22 @@ class Graph[T:Ordering] (val isUndirected:Boolean=false) {
 
 object Graph {
 
+	def fromEdgeFileV2(filename:String, isUndirected:Boolean = false) = {
+		var graph = new Graph[Int](isUndirected)
+
+		var lines = scala.io.Source.fromFile(filename).getLines()
+
+		var firstline = lines.next().split(" ")
+		val cNodes = firstline(0).toInt
+		val cEdges = firstline(1).toInt
+
+		for (i <- 1 to cEdges) {
+			val a = lines.next().split(" ")
+		    graph.addEdge(a(0).toInt, a(1).toInt, a(2).toInt)
+		}
+		graph
+	}
+
 	def fromEdgeFile(filename:String) = {
 		var graph = new Graph[Int]()
 
