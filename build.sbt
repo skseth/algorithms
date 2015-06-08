@@ -30,5 +30,11 @@ lazy val arithmetic = project.in(file("arithmetic")).
             settings(commonSettings: _*)
 
 
+
+lazy val scheduling = project.in(file("scheduling")).
+            dependsOn(structs % "compile->compile;test").
+            settings(commonSettings: _*)
+
+
 lazy val root = (project in file(".")).
-  					aggregate(structs,sorting, graphs,lookup, arithmetic)
+  					aggregate(structs,sorting, graphs,lookup, arithmetic, scheduling)
